@@ -6,7 +6,7 @@ import com.br.keyroom.domain.UserRole;
 import com.br.keyroom.repository.UserRepository;
 import com.br.keyroom.security.TokenService;
 import com.br.keyroom.service.AuthenticationDTO;
-import com.br.keyroom.service.ResgisterDTO;
+import com.br.keyroom.service.ResgisterUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +37,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Validated ResgisterDTO resgisterDTO) {
+    public ResponseEntity register(@RequestBody @Validated ResgisterUserDTO resgisterDTO) {
         if(this.userRepository.findByLogin(resgisterDTO.login()) != null) {
             return ResponseEntity.badRequest().build();
         }
