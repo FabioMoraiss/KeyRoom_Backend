@@ -20,8 +20,8 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC512(secret);
             String token = JWT.create()
-                    .withIssuer("Cassinov1")
-                    .withSubject(user.getLogin())
+                    .withIssuer("keyRoom API")
+                    .withSubject(String.valueOf(user.getId()))
                     .withExpiresAt(getExpirationTime())
                     .sign(algorithm);
             return token;
@@ -34,7 +34,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC512(secret);
             return JWT.require(algorithm)
-                    .withIssuer("Cassinov1")
+                    .withIssuer("keyRoom API")
                     .build()
                     .verify(token)
                     .getSubject();
