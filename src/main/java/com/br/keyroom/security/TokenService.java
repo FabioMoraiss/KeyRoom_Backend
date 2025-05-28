@@ -21,7 +21,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC512(secret);
             String token = JWT.create()
                     .withIssuer("keyRoom API")
-                    .withSubject(String.valueOf(user.getId()))
+                    .withSubject(user.getLogin())
                     .withExpiresAt(getExpirationTime())
                     .sign(algorithm);
             return token;
