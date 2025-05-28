@@ -24,7 +24,6 @@ public class Secret {
     private String password;
     private String url;
     private String notes;
-    private String tag;
     private String OTPCode;
 
     public Secret(User user,String title, String login, String password, String url, String notes, String OTPCode) {
