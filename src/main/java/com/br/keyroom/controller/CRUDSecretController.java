@@ -23,8 +23,7 @@ public class CRUDSecretController {
     private SecretRepository secretRepository;
 
     @PostMapping
-    public ResponseEntity<?> setSecret( @RequestHeader("Authorization") String authorizationHeader,
-                                        @RequestBody @Validated RegisterSecretDTO secretDTO) {
+    public ResponseEntity<?> postSecret(@RequestHeader("Authorization") String authorizationHeader, @RequestBody @Validated RegisterSecretDTO secretDTO) {
 
         String token = authorizationHeader.replace("Bearer ", "");
         var login = tokenService.validateToken(token);
@@ -46,6 +45,30 @@ public class CRUDSecretController {
         secretRepository.save(secret);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllSecrets(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        var login = tokenService.validateToken(token);
+        User user = userRepository.findByLogin(login);
+
+        if (user == null) {
+            return ResponseEntity.status(404).body("Usuário não encontrado");
+        }
+
+        var secrets = secretRepository.findAllByUser(user)
+                .stream()
+                .map(secret -> new RegisterSecretDTO(
+                        secret.getTitle(),
+                        secret.getLogin(),
+                        secret.getPassword(),
+                        secret.getUrl(),
+                        secret.getNotes(),
+                        secret.getOTPCode()
+                ))
+                .toList();
+        return ResponseEntity.ok(secrets);
     }
 }
 
