@@ -23,6 +23,7 @@ public class SecretController {
     private SecretRepository secretRepository;
     private static final String ERROR_DELETE_SECRET = "Error deleting secret";
     private static final String USER_NOT_FOUND = "User not found";
+    private static final String ERROR_UPDATING_SECRET = "Error updating secret";
 
 
     @PostMapping
@@ -98,6 +99,36 @@ public class SecretController {
 
     private String getToken(String authorizationHeader) {
         return authorizationHeader.replace("Bearer ", "");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateSecret(@RequestHeader("Authorization") String authorizationHeader,
+                                          @PathVariable int id,
+                                          @RequestBody @Validated RegisterSecretDTO secretDTO) {
+        String token = getToken(authorizationHeader);
+        var login = tokenService.validateToken(token);
+        User user = userRepository.findByLogin(login);
+
+        if (user == null) {
+            return ResponseEntity.status(404).body(USER_NOT_FOUND);
+        }
+
+        var secret = secretRepository.findById(id);
+        if (secret.isEmpty() || !secret.get().getUser().equals(user)) {
+            return ResponseEntity.status(404).body(ERROR_UPDATING_SECRET);
+        }
+
+        Secret secretUpdated = secret.get();
+        secretUpdated.setTitle(secretDTO.tittle());
+        secretUpdated.setLogin(secretDTO.login());
+        secretUpdated.setPassword(secretDTO.password());
+        secretUpdated.setUrl(secretDTO.url());
+        secretUpdated.setNotes(secretDTO.notes());
+        secretUpdated.setOTPCode(secretDTO.OTPCode());
+
+        secretRepository.save(secretUpdated);
+
+        return ResponseEntity.ok("Secret updated");
     }
 }
 
