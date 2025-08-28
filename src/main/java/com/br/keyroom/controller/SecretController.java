@@ -8,13 +8,12 @@ import com.br.keyroom.security.TokenService;
 import com.br.keyroom.service.RegisterSecretDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/secret")
-public class CRUDSecretController {
+public class SecretController {
     @Autowired
     private TokenService tokenService;
     @Autowired
@@ -23,7 +22,8 @@ public class CRUDSecretController {
     private SecretRepository secretRepository;
 
     @PostMapping
-    public ResponseEntity<?> postSecret(@RequestHeader("Authorization") String authorizationHeader, @RequestBody @Validated RegisterSecretDTO secretDTO) {
+    public ResponseEntity<?> postSecret(@RequestHeader("Authorization") String authorizationHeader,
+                                        @RequestBody @Validated RegisterSecretDTO secretDTO) {
 
         String token = authorizationHeader.replace("Bearer ", "");
         var login = tokenService.validateToken(token);
