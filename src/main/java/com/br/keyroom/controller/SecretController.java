@@ -21,6 +21,9 @@ public class SecretController {
     private UserRepository userRepository;
     @Autowired
     private SecretRepository secretRepository;
+    private static final String ERROR_DELETE_SECRET = "Error deleting secret";
+    private static final String USER_NOT_FOUND = "User not found";
+
 
     @PostMapping
     public ResponseEntity<?> postSecret(@RequestHeader("Authorization") String authorizationHeader,
@@ -31,7 +34,7 @@ public class SecretController {
         User user = userRepository.findByLogin(login);
 
         if (user == null) {
-            return ResponseEntity.status(404).body("Usuário não encontrado");
+            return ResponseEntity.status(404).body(USER_NOT_FOUND);
         }
 
         Secret secret = new Secret(
@@ -55,7 +58,7 @@ public class SecretController {
         User user = userRepository.findByLogin(login);
 
         if (user == null) {
-            return ResponseEntity.status(404).body("Usuário não encontrado");
+            return ResponseEntity.status(404).body(USER_NOT_FOUND);
         }
 
         var secrets = secretRepository.findAllByUser(user)
@@ -81,12 +84,12 @@ public class SecretController {
         User user = userRepository.findByLogin(login);
 
         if (user == null) {
-            return ResponseEntity.status(404).body("Usuário não encontrado");
+            return ResponseEntity.status(404).body(ERROR_DELETE_SECRET);
         }
 
         var secret = secretRepository.findById(id);
         if (secret.isEmpty() || !secret.get().getUser().equals(user)) {
-            return ResponseEntity.status(404).body("Segredo não encontrado");
+            return ResponseEntity.status(404).body(ERROR_DELETE_SECRET);
         }
 
         secretRepository.delete(secret.get());
