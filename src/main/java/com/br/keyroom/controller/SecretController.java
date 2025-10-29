@@ -5,17 +5,15 @@ import com.br.keyroom.domain.User;
 import com.br.keyroom.repository.SecretRepository;
 import com.br.keyroom.repository.UserRepository;
 import com.br.keyroom.security.TokenService;
-import com.br.keyroom.service.ListSecretDTO;
-import com.br.keyroom.service.PwnedSecretDTO;
+import com.br.keyroom.service.dto.ListSecretDTO;
+import com.br.keyroom.service.dto.PwnedSecretDTO;
 import com.br.keyroom.service.PwnedSecretsService;
-import com.br.keyroom.service.RegisterSecretDTO;
+import com.br.keyroom.service.dto.RegisterSecretDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController

@@ -1,5 +1,4 @@
-package com.br.keyroom.service;
-import jakarta.validation.constraints.NotBlank;
+package com.br.keyroom.service.dto;
 
 
 public record ListSecretDTO(    int id,

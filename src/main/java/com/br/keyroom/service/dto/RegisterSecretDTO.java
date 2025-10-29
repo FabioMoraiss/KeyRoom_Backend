@@ -1,4 +1,4 @@
-package com.br.keyroom.service;
+package com.br.keyroom.service.dto;
 import jakarta.validation.constraints.NotBlank;
 
 
